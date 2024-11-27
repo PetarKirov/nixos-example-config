@@ -1,0 +1,11 @@
+# Nix build artifacts
+result
+.result
+
+# Direnv
+.direnv
+
+*.qcow2
+
+# local env settings
+.env
