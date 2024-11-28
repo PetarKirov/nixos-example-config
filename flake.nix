@@ -4,7 +4,11 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = inputs @ {flake-parts, ...}:
+  outputs = inputs @ {
+    flake-parts,
+    nixpkgs,
+    ...
+  }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-darwin" "aarch64-linux"];
       perSystem = {pkgs, ...}: {
@@ -25,6 +29,15 @@
         packages.hello-python = pkgs.writers.writePython3Bin "hello-python" {} ''
           print("Hello from Python")
         '';
+      };
+
+      flake = {
+        nixosConfigurations.example-nixos-config = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./configuration.nix
+          ];
+        };
       };
     };
 }
